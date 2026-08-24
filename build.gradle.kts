@@ -1,5 +1,6 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
+    alias(libs.plugins.ktlint)
     alias(libs.plugins.modstitch)
 }
 
@@ -10,6 +11,10 @@ val javaTarget = (property("java_version") as String).toInt()
 kotlin {
     jvmToolchain(javaTarget)
     coreLibrariesVersion = property("deps.kotlin_stdlib") as String
+}
+
+ktlint {
+    version = libs.versions.ktlint.asProvider()
 }
 
 modstitch {

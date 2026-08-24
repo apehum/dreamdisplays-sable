@@ -1,7 +1,13 @@
 plugins {
     id("dev.kikugie.stonecutter")
+    alias(libs.plugins.kotlin.jvm) apply false
+    alias(libs.plugins.ktlint)
 }
 stonecutter active "1.21.1-neoforge"
+
+ktlint {
+    version = libs.versions.ktlint.asProvider()
+}
 
 stonecutter parameters {
     constants.match(node.metadata.project.substringAfterLast('-'), "fabric", "neoforge")

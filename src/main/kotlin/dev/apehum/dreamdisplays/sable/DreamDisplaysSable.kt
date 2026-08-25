@@ -44,7 +44,8 @@ object DreamDisplaysSable {
                 CoroutineExceptionHandler { _, error -> logger.error("Unhandled coroutine exception", error) },
         )
 
-    private var store: ServerBindingStore? = null
+    var bindingStore: ServerBindingStore? = null
+        private set
 
     init {
         MOD_BUS.addListener(::registerBindingChannel)
@@ -74,21 +75,21 @@ object DreamDisplaysSable {
         runCatching { runBlocking { bindings.load() } }
             .onFailure { logger.error("Failed to load display bindings from $file", it) }
 
-        store = bindings
+        bindingStore = bindings
         PendingBindingEvents.push(BindingEvent.Reconcile)
     }
 
     private fun onServerStopping(event: ServerStoppingEvent) {
-        val bindings = store ?: return
+        val bindings = bindingStore ?: return
         runCatching { runBlocking { bindings.save() } }
             .onFailure { logger.error("Failed to persist display bindings on shutdown", it) }
 
-        store = null
+        bindingStore = null
         PendingBindingEvents.clear()
     }
 
     private fun onServerTick(event: ServerTickEvent.Post) {
-        val bindings = store ?: return
+        val bindings = bindingStore ?: return
         val events = PendingBindingEvents.drain().takeIf { it.isNotEmpty() } ?: return
 
         handleBindingEvents(event.server, bindings, events)
@@ -96,7 +97,7 @@ object DreamDisplaysSable {
 
     private fun onPlayerLoggedIn(event: PlayerEvent.PlayerLoggedInEvent) {
         val player = event.entity as? ServerPlayer ?: return
-        val bindings = store ?: return
+        val bindings = bindingStore ?: return
 
         player.sendPayload(BindingSnapshotPayload.of(bindings.snapshot().values))
     }

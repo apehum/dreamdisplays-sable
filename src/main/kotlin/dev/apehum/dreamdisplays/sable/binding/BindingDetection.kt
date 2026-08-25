@@ -1,7 +1,5 @@
 package dev.apehum.dreamdisplays.sable.binding
 
-import com.dreamdisplays.platform.server.VanillaConfigKt
-import com.dreamdisplays.platform.server.VanillaServerState
 import com.dreamdisplays.platform.server.datatypes.display.VanillaDisplayData
 import com.dreamdisplays.platform.server.managers.DisplayManager
 import com.dreamdisplays.platform.server.utils.RegionUtil
@@ -11,9 +9,6 @@ import dev.apehum.dreamdisplays.sable.companion.subLevelById
 import dev.apehum.dreamdisplays.sable.companion.subLevelsIntersecting
 import dev.apehum.dreamdisplays.sable.companion.toLocalBlock
 import dev.ryanhcode.sable.companion.SubLevelAccess
-import net.minecraft.core.BlockPos
-import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerLevel
 import java.util.UUID
@@ -98,14 +93,4 @@ private fun SubLevelAccess.bindingFor(display: VanillaDisplayData): DisplayBindi
 private fun isBuiltInWorld(
     level: ServerLevel,
     display: VanillaDisplayData,
-): Boolean {
-    val baseMaterial =
-        ResourceLocation.tryParse(VanillaConfigKt.getBaseMaterialId(VanillaServerState.INSTANCE.config.settings))
-            ?: return false
-
-    return BlockPos
-        .betweenClosed(display.pos1, display.pos2)
-        .any { position ->
-            !level.isLoaded(position) || BuiltInRegistries.BLOCK.getKey(level.getBlockState(position).block) == baseMaterial
-        }
-}
+): Boolean = level.hasBaseMaterial(display.pos1, display.pos2)

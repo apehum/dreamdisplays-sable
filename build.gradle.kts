@@ -73,6 +73,10 @@ dependencies {
     }
 
     modstitch.moddevgradle {
+        modstitchJiJ("dev.ryanhcode.sable-companion:sable-companion-common-$mcVersion:[${property("deps.sable_companion")},)") {
+            version { prefer(property("deps.sable_companion") as String) }
+        }
+
         modstitchModImplementation("thedarkcolour:kotlinforforge-neoforge:${property("deps.kotlin_for_forge")}")
         modstitchModImplementation("maven.modrinth:dreamdisplays:${property("deps.dreamdisplays")}")
         modstitchModImplementation("maven.modrinth:sable:${property("deps.sable")}+mc$mcVersion-neoforge")

@@ -5,6 +5,7 @@ import com.dreamdisplays.platform.server.managers.DisplayManager
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation
 import com.llamalad7.mixinextras.sugar.Local
+import dev.apehum.dreamdisplays.sable.binding.boundDisplayAt
 import dev.apehum.dreamdisplays.sable.binding.event.BindingEvent
 import dev.apehum.dreamdisplays.sable.binding.event.PendingBindingEvents
 import dev.apehum.dreamdisplays.sable.binding.isBoundDisplayInRange
@@ -86,5 +87,23 @@ open class DisplayManagerMixin {
         val inRange = data.isBoundDisplayInRange(position) ?: return
 
         cir.returnValue = inRange
+    }
+
+    @Inject(
+        method = [
+            "isContains(Ljava/lang/String;Lnet/minecraft/core/BlockPos;)" +
+                "Lcom/dreamdisplays/platform/server/datatypes/display/VanillaDisplayData;",
+        ],
+        at = [At("HEAD")],
+        cancellable = true,
+    )
+    open fun sable_boundDisplayContains(
+        worldKey: String,
+        position: BlockPos,
+        cir: CallbackInfoReturnable<VanillaDisplayData>,
+    ) {
+        val display = boundDisplayAt(worldKey, position) ?: return
+
+        cir.returnValue = display
     }
 }

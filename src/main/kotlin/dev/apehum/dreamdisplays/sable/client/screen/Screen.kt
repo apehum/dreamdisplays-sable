@@ -17,6 +17,23 @@ fun DisplayScreen.boundDistance(position: BlockPos): Double? = boundDistance(uui
 
 fun FullDisplayData.boundDistance(position: BlockPos): Double? = boundDistance(uuid, width, height, facing, position)
 
+fun DisplayScreen.boundContains(position: BlockPos): Boolean? {
+    val binding = ClientBindings[uuid] ?: return null
+    val level = Minecraft.getInstance().level ?: return null
+    val local = level.subLevelLocalOf(binding.subLevelId, position) ?: return null
+    val min = binding.localMin
+
+    return DisplayGeometry.INSTANCE.isInBounds(
+        local,
+        min.x,
+        min.y,
+        min.z,
+        width,
+        height,
+        facing,
+    )
+}
+
 fun boundDistance(
     displayId: UUID,
     width: Int,

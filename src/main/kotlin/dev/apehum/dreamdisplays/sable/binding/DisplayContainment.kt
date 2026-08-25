@@ -7,6 +7,7 @@ import com.dreamdisplays.platform.server.utils.RegionUtil
 import dev.apehum.dreamdisplays.sable.DreamDisplaysSable
 import dev.apehum.dreamdisplays.sable.companion.subLevelAt
 import net.minecraft.core.BlockPos
+import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 
 fun boundDisplayAt(
@@ -26,3 +27,5 @@ fun boundDisplayAt(
         .mapNotNull { DisplayManager.getDisplayData(it.displayId) as? VanillaDisplayData }
         .firstOrNull { it.worldKey == worldKey }
 }
+
+fun VanillaDisplayData.boundBox(): AABB? = DreamDisplaysSable.bindingStore?.get(id)?.box

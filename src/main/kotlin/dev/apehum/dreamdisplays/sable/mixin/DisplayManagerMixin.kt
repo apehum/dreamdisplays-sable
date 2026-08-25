@@ -5,6 +5,7 @@ import com.dreamdisplays.platform.server.managers.DisplayManager
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation
 import com.llamalad7.mixinextras.sugar.Local
+import dev.apehum.dreamdisplays.sable.binding.boundBox
 import dev.apehum.dreamdisplays.sable.binding.boundDisplayAt
 import dev.apehum.dreamdisplays.sable.binding.event.BindingEvent
 import dev.apehum.dreamdisplays.sable.binding.event.PendingBindingEvents
@@ -12,6 +13,7 @@ import dev.apehum.dreamdisplays.sable.binding.isBoundDisplayInRange
 import dev.apehum.dreamdisplays.sable.binding.isBoundDisplayIntact
 import net.minecraft.core.BlockPos
 import net.minecraft.server.MinecraftServer
+import net.minecraft.world.phys.AABB
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
 import org.spongepowered.asm.mixin.injection.Inject
@@ -105,5 +107,20 @@ open class DisplayManagerMixin {
         val display = boundDisplayAt(worldKey, position) ?: return
 
         cir.returnValue = display
+    }
+
+    @WrapOperation(
+        method = ["isOverlaps(Lcom/dreamdisplays/platform/server/datatypes/selection/VanillaSelectionData;)Z"],
+        at = [At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;intersects(Lnet/minecraft/world/phys/AABB;)Z")],
+    )
+    open fun sable_boundDisplayOverlaps(
+        box: AABB,
+        selection: AABB,
+        original: Operation<Boolean>,
+        @Local data: VanillaDisplayData,
+    ): Boolean {
+        val bound = data.boundBox() ?: return original.call(box, selection)
+
+        return bound.intersects(selection)
     }
 }

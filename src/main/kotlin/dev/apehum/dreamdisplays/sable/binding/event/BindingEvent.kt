@@ -1,6 +1,7 @@
 package dev.apehum.dreamdisplays.sable.binding.event
 
 import com.dreamdisplays.platform.server.utils.RegionUtil
+import dev.apehum.dreamdisplays.sable.companion.SubLevelPose
 import dev.apehum.dreamdisplays.sable.companion.observeSubLevels
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -23,6 +24,7 @@ sealed interface BindingEvent {
 
     data class SubLevelRemoved(
         val subLevelId: UUID,
+        val pose: SubLevelPose,
     ) : BindingEvent
 }
 
@@ -43,6 +45,6 @@ fun observeSubLevelEvents() {
         onAdded = { level, subLevelId ->
             PendingBindingEvents.push(BindingEvent.SubLevelAdded(RegionUtil.INSTANCE.getLevelKey(level), subLevelId))
         },
-        onRemoved = { subLevelId -> PendingBindingEvents.push(BindingEvent.SubLevelRemoved(subLevelId)) },
+        onRemoved = { subLevelId, pose -> PendingBindingEvents.push(BindingEvent.SubLevelRemoved(subLevelId, pose)) },
     )
 }

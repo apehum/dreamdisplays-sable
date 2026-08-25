@@ -5,6 +5,7 @@ import dev.apehum.dreamdisplays.sable.binding.ServerBindingStore
 import dev.apehum.dreamdisplays.sable.binding.bindDisplay
 import dev.apehum.dreamdisplays.sable.binding.bindDisplaysInSubLevel
 import dev.apehum.dreamdisplays.sable.binding.reconcileBindings
+import dev.apehum.dreamdisplays.sable.binding.relocateDisassembled
 import dev.apehum.dreamdisplays.sable.network.broadcastPayload
 import dev.apehum.dreamdisplays.sable.network.packets.BindingUpdatePayload
 import net.minecraft.server.MinecraftServer
@@ -45,10 +46,9 @@ private fun changesFor(
         }
 
         is BindingEvent.SubLevelRemoved -> {
-            store
-                .snapshot()
-                .values
-                .filter { it.subLevelId == event.subLevelId }
-                .map { BindingChange.Unbound(it.displayId) }
+            val disassembled = store.snapshot().values.filter { it.subLevelId == event.subLevelId }
+            disassembled.forEach { relocateDisassembled(server, it, event.pose) }
+
+            disassembled.map { BindingChange.Unbound(it.displayId) }
         }
     }

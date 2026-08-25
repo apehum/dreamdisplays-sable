@@ -9,7 +9,7 @@ import java.util.UUID
 
 fun observeSubLevels(
     onAdded: (ServerLevel, UUID) -> Unit,
-    onRemoved: (UUID) -> Unit,
+    onRemoved: (UUID, SubLevelPose) -> Unit,
 ) {
     SableEventPlatform.INSTANCE.onSubLevelContainerReady { level, container ->
         if (level !is ServerLevel) return@onSubLevelContainerReady
@@ -22,7 +22,9 @@ fun observeSubLevels(
                     subLevel: SubLevel,
                     reason: SubLevelRemovalReason,
                 ) {
-                    if (reason == SubLevelRemovalReason.REMOVED) onRemoved(subLevel.uniqueId)
+                    if (reason == SubLevelRemovalReason.REMOVED) {
+                        onRemoved(subLevel.uniqueId, subLevel.logicalPose().snapshot())
+                    }
                 }
             },
         )

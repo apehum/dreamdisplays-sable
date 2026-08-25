@@ -47,3 +47,16 @@ fun Pose3dc.toLocalBlock(position: Vec3): BlockPos {
 
     return BlockPos(Mth.floor(local.x), Mth.floor(local.y), Mth.floor(local.z))
 }
+
+fun Level.subLevelLocalOf(
+    sourceId: UUID,
+    targetId: UUID,
+    local: BlockPos,
+): BlockPos? {
+    val source = subLevelById(sourceId)?.logicalPose() ?: return null
+    val target = subLevelById(targetId)?.logicalPose() ?: return null
+
+    return target.toLocalBlock(source.toWorld(local))
+}
+
+fun Pose3dc.toWorld(local: BlockPos): Vec3 = transformPosition(Vec3(local.x + 0.5, local.y + 0.5, local.z + 0.5))

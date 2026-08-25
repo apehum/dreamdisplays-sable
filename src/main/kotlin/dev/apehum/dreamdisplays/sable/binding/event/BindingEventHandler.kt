@@ -4,6 +4,7 @@ import dev.apehum.dreamdisplays.sable.binding.BindingChange
 import dev.apehum.dreamdisplays.sable.binding.ServerBindingStore
 import dev.apehum.dreamdisplays.sable.binding.bindDisplay
 import dev.apehum.dreamdisplays.sable.binding.bindDisplaysInSubLevel
+import dev.apehum.dreamdisplays.sable.binding.rebindSplitDisplays
 import dev.apehum.dreamdisplays.sable.binding.reconcileBindings
 import dev.apehum.dreamdisplays.sable.binding.relocateDisassembled
 import dev.apehum.dreamdisplays.sable.network.broadcastPayload
@@ -41,8 +42,11 @@ private fun changesFor(
         }
 
         is BindingEvent.SubLevelAdded -> {
-            bindDisplaysInSubLevel(server, store.snapshot(), event.worldKey, event.subLevelId)
-                .map(BindingChange::Bound)
+            val known = store.snapshot()
+            val split = rebindSplitDisplays(server, known, event.worldKey, event.subLevelId)
+            val fresh = bindDisplaysInSubLevel(server, known, event.worldKey, event.subLevelId)
+
+            (split + fresh).map(BindingChange::Bound)
         }
 
         is BindingEvent.SubLevelRemoved -> {

@@ -1,6 +1,7 @@
 plugins {
     alias(libs.plugins.kotlin.jvm)
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.modstitch)
 }
 
@@ -10,7 +11,6 @@ val javaTarget = (property("java_version") as String).toInt()
 
 kotlin {
     jvmToolchain(javaTarget)
-    coreLibrariesVersion = property("deps.kotlin_stdlib") as String
 }
 
 ktlint {
@@ -65,11 +65,17 @@ base {
 }
 
 dependencies {
-    modstitchCompileOnly("dev.ryanhcode.sable-companion:sable-companion-common-$mcVersion:${property("deps.sable_companion")}")
+    compileOnly(libs.kotlinx.coroutines.core)
+    compileOnly(libs.kotlinx.serialization.json)
+    compileOnly("dev.ryanhcode.sable-companion:sable-companion-common-$mcVersion:${property("deps.sable_companion")}")
+    compileOnly("dev.ryanhcode.sable:sable-common-$mcVersion:${property("deps.sable")}") {
+        isTransitive = false
+    }
 
     modstitch.moddevgradle {
         modstitchModImplementation("thedarkcolour:kotlinforforge-neoforge:${property("deps.kotlin_for_forge")}")
-        modstitchModCompileOnly("maven.modrinth:dreamdisplays:${property("deps.dreamdisplays")}")
+        modstitchModImplementation("maven.modrinth:dreamdisplays:${property("deps.dreamdisplays")}")
+        modstitchModImplementation("maven.modrinth:sable:${property("deps.sable")}+mc$mcVersion-neoforge")
     }
 }
 

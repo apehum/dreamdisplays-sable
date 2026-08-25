@@ -38,7 +38,10 @@ allprojects {
             forRepository {
                 maven("https://maven.ryanhcode.dev/releases")
             }
-            filter { includeGroup("dev.ryanhcode.sable-companion") }
+            filter {
+                includeGroup("dev.ryanhcode.sable")
+                includeGroup("dev.ryanhcode.sable-companion")
+            }
         }
     }
 }

@@ -5,7 +5,7 @@ import dev.apehum.dreamdisplays.sable.binding.event.BindingEvent
 import dev.apehum.dreamdisplays.sable.binding.event.PendingBindingEvents
 import dev.apehum.dreamdisplays.sable.binding.event.handleBindingEvents
 import dev.apehum.dreamdisplays.sable.binding.event.observeSubLevelEvents
-import dev.apehum.dreamdisplays.sable.client.registerClientBindingListeners
+import dev.apehum.dreamdisplays.sable.client.binding.registerClientBindingListeners
 import dev.apehum.dreamdisplays.sable.network.packets.BindingSnapshotPayload
 import dev.apehum.dreamdisplays.sable.network.registerBindingChannel
 import dev.apehum.dreamdisplays.sable.network.sendPayload

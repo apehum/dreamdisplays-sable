@@ -6,7 +6,11 @@
   "mixins": [
     "DisplayManagerMixin"
   ],
-  "client": [],
+  "client": [
+    "DisplayLifecycleManagerMixin",
+    "DisplayScreenMixin",
+    "ScreenRendererMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

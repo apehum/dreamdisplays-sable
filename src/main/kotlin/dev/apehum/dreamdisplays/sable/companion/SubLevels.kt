@@ -7,13 +7,14 @@ import dev.ryanhcode.sable.companion.math.BoundingBox3d
 import dev.ryanhcode.sable.companion.math.BoundingBox3dc
 import dev.ryanhcode.sable.companion.math.Pose3dc
 import net.minecraft.core.BlockPos
+import net.minecraft.core.Position
 import net.minecraft.util.Mth
 import net.minecraft.world.level.Level
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 import java.util.UUID
 
-fun Level.subLevelAt(pos: BlockPos): SubLevelAccess? = SableCompanion.INSTANCE.getContaining(this, pos)
+fun Level.subLevelAt(position: BlockPos): SubLevelAccess? = SableCompanion.INSTANCE.getContaining(this, position)
 
 fun Level.subLevelById(subLevelId: UUID): SubLevelAccess? =
     SubLevelContainer
@@ -29,8 +30,20 @@ fun BoundingBox3dc.contains(box: AABB): Boolean =
     contains(box.minX, box.minY, box.minZ) &&
         contains(box.maxX, box.maxY, box.maxZ)
 
-fun Pose3dc.toLocalBlock(pos: BlockPos): BlockPos {
-    val local = transformPositionInverse(Vec3(pos.x + 0.5, pos.y + 0.5, pos.z + 0.5))
+fun Pose3dc.toLocalBlock(position: BlockPos): BlockPos = toLocalBlock(position.center)
+
+fun Level.subLevelLocalOf(
+    subLevelId: UUID,
+    position: BlockPos,
+): BlockPos? {
+    val subLevel = subLevelById(subLevelId) ?: return null
+    val world = SableCompanion.INSTANCE.projectOutOfSubLevel(this, position.center as Position)
+
+    return subLevel.logicalPose().toLocalBlock(world)
+}
+
+fun Pose3dc.toLocalBlock(position: Vec3): BlockPos {
+    val local = transformPositionInverse(position)
 
     return BlockPos(Mth.floor(local.x), Mth.floor(local.y), Mth.floor(local.z))
 }

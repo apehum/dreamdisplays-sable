@@ -1,6 +1,6 @@
 package dev.apehum.dreamdisplays.sable.network
 
-import dev.apehum.dreamdisplays.sable.client.ClientBindings
+import dev.apehum.dreamdisplays.sable.client.binding.ClientBindings
 import dev.apehum.dreamdisplays.sable.network.packets.BindingSnapshotPayload
 import dev.apehum.dreamdisplays.sable.network.packets.BindingUpdatePayload
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload

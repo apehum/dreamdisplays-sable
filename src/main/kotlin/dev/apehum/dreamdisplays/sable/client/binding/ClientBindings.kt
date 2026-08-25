@@ -1,4 +1,4 @@
-package dev.apehum.dreamdisplays.sable.client
+package dev.apehum.dreamdisplays.sable.client.binding
 
 import dev.apehum.dreamdisplays.sable.binding.DisplayBinding
 import org.slf4j.LoggerFactory

@@ -7,7 +7,9 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation
 import com.llamalad7.mixinextras.sugar.Local
 import dev.apehum.dreamdisplays.sable.binding.event.BindingEvent
 import dev.apehum.dreamdisplays.sable.binding.event.PendingBindingEvents
+import dev.apehum.dreamdisplays.sable.binding.isBoundDisplayInRange
 import dev.apehum.dreamdisplays.sable.binding.isBoundDisplayIntact
+import net.minecraft.core.BlockPos
 import net.minecraft.server.MinecraftServer
 import org.spongepowered.asm.mixin.Mixin
 import org.spongepowered.asm.mixin.injection.At
@@ -66,5 +68,23 @@ open class DisplayManagerMixin {
         cir: CallbackInfoReturnable<List<UUID>>,
     ) {
         cir.returnValue.forEach { PendingBindingEvents.push(BindingEvent.DisplayRemoved(it)) }
+    }
+
+    @Inject(
+        method = [
+            "isInRange(Lnet/minecraft/core/BlockPos;" +
+                "Lcom/dreamdisplays/platform/server/datatypes/display/VanillaDisplayData;)Z",
+        ],
+        at = [At("HEAD")],
+        cancellable = true,
+    )
+    open fun sable_boundDisplayInRange(
+        position: BlockPos,
+        data: VanillaDisplayData,
+        cir: CallbackInfoReturnable<Boolean>,
+    ) {
+        val inRange = data.isBoundDisplayInRange(position) ?: return
+
+        cir.returnValue = inRange
     }
 }

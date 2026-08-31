@@ -9,6 +9,7 @@ import dev.apehum.dreamdisplays.sable.mixin.VanillaDisplayDataAccessor
 import net.minecraft.core.BlockPos
 import net.minecraft.core.Direction
 import net.minecraft.server.MinecraftServer
+import net.minecraft.world.level.block.Rotation
 import net.minecraft.world.phys.AABB
 import net.minecraft.world.phys.Vec3
 import org.slf4j.LoggerFactory
@@ -33,10 +34,27 @@ fun relocateDisassembled(
     }
 
     display.moveTo(pos1, pos2, facing)
-    runCatching { VanillaServerState.INSTANCE.storage?.saveDisplay(display) }
-        .onFailure { logger.error("Failed to persist relocated display ${display.id}", it) }
+    display.publish(server)
+}
 
-    DisplayManager.INSTANCE.sendUpdate(display, DisplayManager.INSTANCE.getReceivers(display, server))
+fun rotateMoved(
+    server: MinecraftServer,
+    binding: DisplayBinding,
+    rotation: Rotation,
+) {
+    val display = DisplayManager.getDisplayData(binding.displayId) as? VanillaDisplayData ?: return
+    val facing = rotation.rotate(display.facing)
+    if (facing == display.facing) return
+
+    (display as VanillaDisplayDataAccessor).sable_setFacing(facing)
+    display.publish(server)
+}
+
+private fun VanillaDisplayData.publish(server: MinecraftServer) {
+    runCatching { VanillaServerState.INSTANCE.storage?.saveDisplay(this) }
+        .onFailure { logger.error("Failed to persist display $id", it) }
+
+    DisplayManager.INSTANCE.sendUpdate(this, DisplayManager.INSTANCE.getReceivers(this, server))
 }
 
 private fun SubLevelPose.rotate(facing: Direction): Direction {

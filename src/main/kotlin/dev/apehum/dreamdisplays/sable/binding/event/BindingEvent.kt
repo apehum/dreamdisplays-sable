@@ -1,8 +1,10 @@
 package dev.apehum.dreamdisplays.sable.binding.event
 
 import com.dreamdisplays.platform.server.utils.RegionUtil
+import dev.apehum.dreamdisplays.sable.binding.DisplayBinding
 import dev.apehum.dreamdisplays.sable.companion.SubLevelPose
 import dev.apehum.dreamdisplays.sable.companion.observeSubLevels
+import net.minecraft.world.level.block.Rotation
 import java.util.UUID
 import java.util.concurrent.ConcurrentLinkedQueue
 
@@ -20,6 +22,12 @@ sealed interface BindingEvent {
     data class SubLevelAdded(
         val worldKey: String,
         val subLevelId: UUID,
+    ) : BindingEvent
+
+    data class DisplaysMoved(
+        val subLevelId: UUID,
+        val bindings: List<DisplayBinding>,
+        val rotation: Rotation,
     ) : BindingEvent
 
     data class SubLevelRemoved(

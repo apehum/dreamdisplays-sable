@@ -36,7 +36,7 @@ open class DisplayManagerMixin {
     }
 
     @Inject(
-        method = ["delete(Lcom/dreamdisplays/platform/server/datatypes/display/VanillaDisplayData;)V"],
+        method = ["delete"],
         at = [At("TAIL")],
     )
     open fun sable_onDisplayDeleted(
@@ -47,7 +47,7 @@ open class DisplayManagerMixin {
     }
 
     @WrapOperation(
-        method = ["validateDisplaysAndCleanup(Lnet/minecraft/server/MinecraftServer;)Ljava/util/List;"],
+        method = ["validateDisplaysAndCleanup"],
         at = [At(value = "INVOKE", target = "Ljava/util/List;add(Ljava/lang/Object;)Z")],
     )
     open fun sable_keepBoundDisplays(
@@ -63,7 +63,7 @@ open class DisplayManagerMixin {
     }
 
     @Inject(
-        method = ["validateDisplaysAndCleanup(Lnet/minecraft/server/MinecraftServer;)Ljava/util/List;"],
+        method = ["validateDisplaysAndCleanup"],
         at = [At("RETURN")],
     )
     open fun sable_onDisplaysCleanedUp(
@@ -74,10 +74,7 @@ open class DisplayManagerMixin {
     }
 
     @Inject(
-        method = [
-            "isInRange(Lnet/minecraft/core/BlockPos;" +
-                "Lcom/dreamdisplays/platform/server/datatypes/display/VanillaDisplayData;)Z",
-        ],
+        method = ["isInRange"],
         at = [At("HEAD")],
         cancellable = true,
     )
@@ -92,10 +89,7 @@ open class DisplayManagerMixin {
     }
 
     @Inject(
-        method = [
-            "isContains(Ljava/lang/String;Lnet/minecraft/core/BlockPos;)" +
-                "Lcom/dreamdisplays/platform/server/datatypes/display/VanillaDisplayData;",
-        ],
+        method = ["isContains"],
         at = [At("HEAD")],
         cancellable = true,
     )
@@ -110,7 +104,7 @@ open class DisplayManagerMixin {
     }
 
     @WrapOperation(
-        method = ["isOverlaps(Lcom/dreamdisplays/platform/server/datatypes/selection/VanillaSelectionData;)Z"],
+        method = ["isOverlaps"],
         at = [At(value = "INVOKE", target = "Lnet/minecraft/world/phys/AABB;intersects(Lnet/minecraft/world/phys/AABB;)Z")],
     )
     open fun sable_boundDisplayOverlaps(

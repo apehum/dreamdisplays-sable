@@ -21,7 +21,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable
 @Mixin(DisplayScreen::class)
 open class DisplayScreenMixin {
     @Inject(
-        method = ["getDistanceToScreen(Lnet/minecraft/core/BlockPos;)D"],
+        method = ["getDistanceToScreen"],
         at = [At("HEAD")],
         cancellable = true,
     )
@@ -36,7 +36,7 @@ open class DisplayScreenMixin {
     }
 
     @Inject(
-        method = ["isInScreen(Lnet/minecraft/core/BlockPos;)Z"],
+        method = ["isInScreen"],
         at = [At("HEAD")],
         cancellable = true,
     )
@@ -51,7 +51,7 @@ open class DisplayScreenMixin {
     }
 
     @Inject(
-        method = ["toSourcePlane()Lcom/dreamdisplays/api/media/audio/model/SourcePlane;"],
+        method = ["toSourcePlane"],
         at = [At("HEAD")],
         cancellable = true,
     )
@@ -63,20 +63,8 @@ open class DisplayScreenMixin {
     }
 
     @WrapOperation(
-        method = [
-            "probeEnvironment(Lcom/dreamdisplays/api/media/audio/model/SourcePlane;)" +
-                "Lcom/dreamdisplays/api/media/audio/model/AcousticEnvironment;",
-        ],
-        at = [
-            At(
-                value = "INVOKE",
-                target =
-                    "Lcom/dreamdisplays/platform/client/audio/VoxelAcousticsProbe;" +
-                        "probe(Lcom/dreamdisplays/api/media/audio/model/SourcePlane;" +
-                        "Lcom/dreamdisplays/api/media/audio/model/ListenerPose;)" +
-                        "Lcom/dreamdisplays/api/media/audio/model/AcousticEnvironment;",
-            ),
-        ],
+        method = ["probeEnvironment"],
+        at = [At(value = "INVOKE", target = "Lcom/dreamdisplays/platform/client/audio/VoxelAcousticsProbe;probe")],
     )
     open fun sable_probeInSubLevel(
         probe: VoxelAcousticsProbe,

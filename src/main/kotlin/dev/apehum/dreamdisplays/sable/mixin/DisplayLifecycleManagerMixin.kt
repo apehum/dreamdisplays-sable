@@ -18,16 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable
 @Mixin(DisplayLifecycleManager::class)
 open class DisplayLifecycleManagerMixin {
     @WrapOperation(
-        method = ["handleInfoPacket(Lcom/dreamdisplays/core/protocol/common/packets/DisplayInfo;)V"],
-        at = [
-            At(
-                value = "INVOKE",
-                target =
-                    "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;" +
-                        "distanceToScreen(IIIIILcom/dreamdisplays/api/display/model/property/DisplayFacing;" +
-                        "Lnet/minecraft/core/BlockPos;)D",
-            ),
-        ],
+        method = ["handleInfoPacket"],
+        at = [At(value = "INVOKE", target = "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;distanceToScreen")],
     )
     open fun sable_boundPacketDistance(
         manager: DisplayLifecycleManager,
@@ -45,10 +37,7 @@ open class DisplayLifecycleManagerMixin {
             ?: original.call(manager, x, y, z, width, height, facing, playerPosition)
 
     @Inject(
-        method = [
-            "distanceToData(Lcom/dreamdisplays/api/storage/model/FullDisplayData;" +
-                "Lnet/minecraft/core/BlockPos;)D",
-        ],
+        method = ["distanceToData"],
         at = [At("HEAD")],
         cancellable = true,
     )

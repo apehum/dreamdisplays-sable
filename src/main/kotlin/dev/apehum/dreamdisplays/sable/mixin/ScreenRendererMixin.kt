@@ -16,8 +16,12 @@ import org.spongepowered.asm.mixin.injection.At
 open class ScreenRendererMixin {
     @WrapOperation(
         method = [
-            "render(Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/Camera;" +
-                "Lcom/dreamdisplays/libs/kotlin/jvm/functions/Function2;)V",
+            "render(" +
+                "Lcom/mojang/blaze3d/vertex/PoseStack;" +
+                "Lnet/minecraft/client/Camera;" +
+                "Z" +
+                "Lcom/dreamdisplays/libs/kotlin/jvm/functions/Function2;" +
+                ")V",
         ],
         at = [At(value = "INVOKE", target = "Lcom/mojang/blaze3d/vertex/PoseStack;translate(DDD)V")],
     )

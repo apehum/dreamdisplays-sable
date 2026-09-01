@@ -3,11 +3,14 @@ plugins {
     alias(libs.plugins.ktlint)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.modstitch)
+    alias(libs.plugins.modpublish)
 }
+
+fun stringProperty(name: String): String = property(name) as String
 
 val platform = stonecutter.current.project.substringAfter('-')
 val mcVersion = stonecutter.current.version
-val javaTarget = (property("java_version") as String).toInt()
+val javaTarget = stringProperty("java_version").toInt()
 
 kotlin {
     jvmToolchain(javaTarget)
@@ -22,7 +25,7 @@ modstitch {
     javaVersion = javaTarget
 
     parchment {
-        mappingsVersion = property("deps.parchment") as String
+        mappingsVersion = stringProperty("deps.parchment")
     }
 
     moddevgradle {
@@ -36,27 +39,27 @@ modstitch {
     }
 
     metadata {
-        modId = property("mod_id") as String
-        modName = property("mod_name") as String
+        modId = stringProperty("mod_id")
+        modName = stringProperty("mod_name")
         modVersion = "${property("mod_version")}+$mcVersion"
-        modGroup = property("maven_group") as String
+        modGroup = stringProperty("maven_group")
         modDescription = "Adds support for Sable sub-levels for Dream Displays"
         modLicense = "LGPL-3.0"
         modAuthor = "apehum"
 
         replacementProperties.apply {
-            put("kotlin_for_forge_range", property("range.kotlin_for_forge") as String)
-            put("neoforge_loader_range", property("range.neoforge_loader") as String)
-            put("minecraft_version_range", property("range.minecraft") as String)
-            put("dreamdisplays_range", property("range.dreamdisplays") as String)
-            put("sable_range", property("range.sable") as String)
+            put("kotlin_for_forge_range", stringProperty("range.kotlin_for_forge"))
+            put("neoforge_loader_range", stringProperty("range.neoforge_loader"))
+            put("minecraft_version_range", stringProperty("range.minecraft"))
+            put("dreamdisplays_range", stringProperty("range.dreamdisplays"))
+            put("sable_range", stringProperty("range.sable"))
         }
     }
 
     mixin {
         addMixinsToModManifest = true
 
-        configs.register(property("mod_id") as String)
+        configs.register(stringProperty("mod_id"))
     }
 }
 
@@ -74,7 +77,7 @@ dependencies {
 
     modstitch.moddevgradle {
         modstitchJiJ("dev.ryanhcode.sable-companion:sable-companion-common-$mcVersion:[${property("deps.sable_companion")},)") {
-            version { prefer(property("deps.sable_companion") as String) }
+            version { prefer(stringProperty("deps.sable_companion")) }
         }
 
         modstitchModImplementation("thedarkcolour:kotlinforforge-neoforge:${property("deps.kotlin_for_forge")}")
@@ -103,5 +106,79 @@ tasks {
 
     build {
         dependsOn(copyToRoot)
+    }
+}
+
+publishMods {
+    changelog =
+        rootProject.layout.projectDirectory
+            .file("changelog.md")
+            .asFile
+            .readText()
+    type = STABLE
+    modLoaders.add(platform)
+
+    val loaderDisplayName =
+        when (platform) {
+            "fabric" -> "Fabric"
+            "neoforge" -> "NeoForge"
+            else -> throw IllegalStateException("Unsupported platform $platform")
+        }
+
+    displayName = "[$loaderDisplayName ${property("minecraft_version")}] ${property("mod_name")} ${property("mod_version")}"
+    file = outputJarTask.get().archiveFile
+
+    val modrinthToken =
+        providers
+            .gradleProperty("modrinth_token")
+            .orElse(
+                providers.environmentVariable("MODRINTH_TOKEN").orNull ?: "",
+            ).orNull
+            ?.takeIf { it.isNotBlank() }
+
+    val curseforgeToken =
+        providers
+            .gradleProperty("curseforge_token")
+            .orElse(
+                providers.environmentVariable("CURSEFORGE_TOKEN").orNull ?: "",
+            ).orNull
+            ?.takeIf { it.isNotBlank() }
+
+    val dryRunProperty =
+        providers
+            .gradleProperty("dry_run")
+            .getOrElse("false")
+            .toBoolean()
+
+    dryRun = modrinthToken == null || curseforgeToken == null || dryRunProperty
+
+    modrinth {
+        projectId = ""
+        accessToken = modrinthToken
+
+        environment = CLIENT_AND_SERVER
+
+        minecraftVersionRange {
+            start = stringProperty("range.minecraft.start")
+            end = stringProperty("range.minecraft.end")
+        }
+
+        requires("dreamdisplays", "kotlin-for-forge")
+    }
+
+    curseforge {
+        projectId = ""
+        accessToken = curseforgeToken
+        changelogType = "markdown"
+
+        client = true
+        server = true
+
+        minecraftVersionRange {
+            start = stringProperty("range.minecraft.start")
+            end = stringProperty("range.minecraft.end")
+        }
+
+        requires("dreamdisplays", "kotlin-for-forge")
     }
 }

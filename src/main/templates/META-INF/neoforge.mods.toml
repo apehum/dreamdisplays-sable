@@ -2,6 +2,7 @@ modLoader = "kotlinforforge"
 loaderVersion = "${kotlin_for_forge_range}"
 license = "${mod_license}"
 issueTrackerURL = "https://github.com/apehum/dreamdisplays-sable/issues"
+logoFile = "icon.png"
 
 [[mods]]
 modId = "${mod_id}"

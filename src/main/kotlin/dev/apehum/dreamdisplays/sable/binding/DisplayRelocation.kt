@@ -46,7 +46,7 @@ fun rotateMoved(
     val facing = rotation.rotate(display.facing)
     if (facing == display.facing) return
 
-    (display as VanillaDisplayDataAccessor).sable_setFacing(facing)
+    (display as VanillaDisplayDataAccessor).`sable$setFacing`(facing)
     display.publish(server)
 }
 
@@ -71,17 +71,17 @@ private fun VanillaDisplayData.moveTo(
     val accessor = this as VanillaDisplayDataAccessor
     val region = RegionUtil.INSTANCE.calculateRegion(pos1, pos2)
 
-    accessor.sable_setPos1(pos1)
-    accessor.sable_setPos2(pos2)
-    accessor.sable_setFacing(facing)
-    accessor.sable_setRegion(region)
-    accessor.sable_setMinX(region.minX)
-    accessor.sable_setMinY(region.minY)
-    accessor.sable_setMinZ(region.minZ)
-    accessor.sable_setMaxX(region.maxX)
-    accessor.sable_setMaxY(region.maxY)
-    accessor.sable_setMaxZ(region.maxZ)
-    accessor.sable_setBox(
+    accessor.`sable$setPos1`(pos1)
+    accessor.`sable$setPos2`(pos2)
+    accessor.`sable$setFacing`(facing)
+    accessor.`sable$setRegion`(region)
+    accessor.`sable$setMinX`(region.minX)
+    accessor.`sable$setMinY`(region.minY)
+    accessor.`sable$setMinZ`(region.minZ)
+    accessor.`sable$setMaxX`(region.maxX)
+    accessor.`sable$setMaxY`(region.maxY)
+    accessor.`sable$setMaxZ`(region.maxZ)
+    accessor.`sable$setBox`(
         AABB(
             region.minX.toDouble(),
             region.minY.toDouble(),

@@ -9,11 +9,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-// can't use kotlin here, because kotlin object produces public INSTANCE field that is rejected by mixins
 @Mixin(value = SubLevelAssemblyHelper.class, remap = false)
 public class SubLevelAssemblyHelperMixin {
     @Inject(method = "moveBlocks", at = @At("HEAD"))
-    private static void sable_onBlocksMoved(
+    private static void sable$onBlocksMoved(
         final ServerLevel level,
         final SubLevelAssemblyHelper.AssemblyTransform transform,
         final Iterable<BlockPos> blocks,

@@ -115,7 +115,21 @@ publishMods {
             .file("changelog.md")
             .asFile
             .readText()
-    type = STABLE
+
+    val releaseType =
+        providers
+            .gradleProperty("release_type")
+            .getOrElse("release")
+            .lowercase()
+
+    type =
+        when (releaseType) {
+            "release", "stable" -> STABLE
+            "beta" -> BETA
+            "alpha" -> ALPHA
+            else -> throw IllegalStateException("Unsupported release type $releaseType")
+        }
+
     modLoaders.add(platform)
 
     val loaderDisplayName =

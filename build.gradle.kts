@@ -177,7 +177,7 @@ publishMods {
             end = stringProperty("range.minecraft.end")
         }
 
-        requires("dreamdisplays", "kotlin-for-forge")
+        requires("dreamdisplays", "kotlin-for-forge", "sable")
     }
 
     curseforge {
@@ -193,6 +193,6 @@ publishMods {
             end = stringProperty("range.minecraft.end")
         }
 
-        requires("dreamdisplays", "kotlin-for-forge")
+        requires("dreamdisplays", "kotlin-for-forge", "sable")
     }
 }

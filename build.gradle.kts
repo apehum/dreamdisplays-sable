@@ -43,7 +43,7 @@ modstitch {
         modName = stringProperty("mod_name")
         modVersion = "${property("mod_version")}+$mcVersion"
         modGroup = stringProperty("maven_group")
-        modDescription = "Adds support for Sable sub-levels for Dream Displays"
+        modDescription = "Addon for Dream Displays that makes displays work in Sable sub-levels"
         modLicense = "LGPL-3.0"
         modAuthor = "apehum"
 

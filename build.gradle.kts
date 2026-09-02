@@ -167,7 +167,7 @@ publishMods {
     dryRun = modrinthToken == null || curseforgeToken == null || dryRunProperty
 
     modrinth {
-        projectId = ""
+        projectId = "1uCy4zy2"
         accessToken = modrinthToken
 
         environment = CLIENT_AND_SERVER
@@ -181,7 +181,7 @@ publishMods {
     }
 
     curseforge {
-        projectId = ""
+        projectId = "1678877"
         accessToken = curseforgeToken
         changelogType = "markdown"
 

@@ -14,7 +14,7 @@ fun VanillaDisplayData.isBoundDisplayInRange(position: BlockPos): Boolean? {
     val level = RegionUtil.INSTANCE.getLevelByKey(server, worldKey) ?: return null
     val local = level.subLevelLocalOf(binding.subLevelId, position) ?: return null
 
-    val maxRenderDistance = VanillaServerState.INSTANCE.config.settings.maxRenderDistance
+    val maxRenderDistance = minOf(server.playerList.viewDistance, server.playerList.simulationDistance) * 16.0
 
     return binding.box.distanceToSqr(Vec3.atCenterOf(local)) <= maxRenderDistance * maxRenderDistance
 }

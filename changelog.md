@@ -1,0 +1,1 @@
+- 1.10.0 Dream Displays support with curved displays

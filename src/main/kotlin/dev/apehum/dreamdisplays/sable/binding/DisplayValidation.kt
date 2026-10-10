@@ -2,12 +2,12 @@ package dev.apehum.dreamdisplays.sable.binding
 
 import com.dreamdisplays.platform.server.VanillaConfigKt
 import com.dreamdisplays.platform.server.VanillaServerState
+import com.dreamdisplays.platform.server.VanillaSurfaces
 import com.dreamdisplays.platform.server.datatypes.display.VanillaDisplayData
 import com.dreamdisplays.platform.server.utils.RegionUtil
 import dev.apehum.dreamdisplays.sable.DreamDisplaysSable
 import net.minecraft.core.BlockPos
 import net.minecraft.core.registries.BuiltInRegistries
-import net.minecraft.resources.ResourceLocation
 import net.minecraft.server.MinecraftServer
 import net.minecraft.server.level.ServerLevel
 
@@ -25,14 +25,15 @@ internal fun ServerLevel.hasBaseMaterial(
     from: BlockPos,
     to: BlockPos,
 ): Boolean {
-    val baseMaterial = baseMaterialId() ?: return false
+    val surface =
+        VanillaSurfaces.INSTANCE.of(VanillaConfigKt.getBaseMaterialId(VanillaServerState.INSTANCE.config.settings))
 
     return BlockPos
         .betweenClosed(from, to)
         .any { position ->
-            !isLoaded(position) || BuiltInRegistries.BLOCK.getKey(getBlockState(position).block) == baseMaterial
+            if (!isLoaded(position)) return@any true
+
+            val state = getBlockState(position)
+            !state.isAir && surface.accepts(BuiltInRegistries.BLOCK.getKey(state.block).toString())
         }
 }
-
-private fun baseMaterialId(): ResourceLocation? =
-    ResourceLocation.tryParse(VanillaConfigKt.getBaseMaterialId(VanillaServerState.INSTANCE.config.settings))

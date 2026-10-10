@@ -20,7 +20,7 @@ public class DisplayLifecycleManagerMixin {
             method = "handleInfoPacket",
             at = @At(
                     value = "INVOKE",
-                    target = "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;distanceToScreen(IIIIILcom/dreamdisplays/api/display/model/property/DisplayFacing;Lnet/minecraft/core/BlockPos;)D"
+                    target = "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;distanceToScreen(IIIIILcom/dreamdisplays/api/display/model/property/DisplayFacing;Lnet/minecraft/core/BlockPos;I)D"
             )
     )
     private double sable$boundPacketDistance(
@@ -32,12 +32,13 @@ public class DisplayLifecycleManagerMixin {
             final int height,
             final DisplayFacing facing,
             final BlockPos playerPosition,
+            final int depth,
             final Operation<Double> original,
             @Local(argsOnly = true) final DisplayInfo packet
     ) {
-        final Double distance = ScreenKt.boundDistance(packet.getId(), width, height, facing, playerPosition);
+        final Double distance = ScreenKt.boundDistance(packet.getId(), width, height, depth, facing, playerPosition);
         if (distance == null) {
-            return original.call(manager, x, y, z, width, height, facing, playerPosition);
+            return original.call(manager, x, y, z, width, height, facing, playerPosition, depth);
         }
 
         return distance;

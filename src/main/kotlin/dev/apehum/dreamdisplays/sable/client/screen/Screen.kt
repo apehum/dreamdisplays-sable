@@ -13,9 +13,11 @@ import net.minecraft.client.Minecraft
 import net.minecraft.core.BlockPos
 import java.util.UUID
 
-fun DisplayScreen.boundDistance(position: BlockPos): Double? = boundDistance(uuid, width, height, facing, position)
+fun DisplayScreen.boundDistance(position: BlockPos): Double? = boundDistance(uuid, width, height, depth, facing, position)
 
-fun FullDisplayData.boundDistance(position: BlockPos): Double? = boundDistance(uuid, width, height, facing, position)
+fun FullDisplayData.boundDistance(position: BlockPos): Double? = boundDistance(uuid, width, height, depth, facing, position)
+
+fun DisplayScreen.boundBlockOrigin(): BlockPos? = ClientBindings[uuid]?.localMin
 
 fun DisplayScreen.boundContains(position: BlockPos): Boolean? {
     val binding = ClientBindings[uuid] ?: return null
@@ -31,6 +33,7 @@ fun DisplayScreen.boundContains(position: BlockPos): Boolean? {
         width,
         height,
         facing,
+        depth,
     )
 }
 
@@ -38,6 +41,7 @@ fun boundDistance(
     displayId: UUID,
     width: Int,
     height: Int,
+    depth: Int,
     facing: DisplayFacing,
     position: BlockPos,
 ): Double? {
@@ -54,6 +58,7 @@ fun boundDistance(
         width,
         height,
         facing,
+        depth.coerceAtLeast(1),
     )
 }
 

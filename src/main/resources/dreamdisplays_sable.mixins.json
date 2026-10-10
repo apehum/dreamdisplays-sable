@@ -9,6 +9,7 @@
     "VanillaDisplayDataAccessor"
   ],
   "client": [
+    "ConformingWorldMeshMixin",
     "DisplayLifecycleManagerMixin",
     "DisplayScreenMixin",
     "ScreenRendererMixin"

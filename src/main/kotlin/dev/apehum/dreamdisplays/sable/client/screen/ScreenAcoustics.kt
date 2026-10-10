@@ -20,7 +20,7 @@ fun DisplayScreen.boundSourcePlane(): SourcePlane? {
     val partialTick = minecraft.timer.getGameTimeDeltaPartialTick(false)
     val min = binding.localMin
     val transform = level.subLevelTransform(binding.subLevelId, min, partialTick) ?: return null
-    val local = DisplayGeometry.INSTANCE.worldPose(min.x, min.y, min.z, width, height, facing)
+    val local = DisplayGeometry.INSTANCE.worldPose(min.x, min.y, min.z, width, height, facing, depth)
 
     val center =
         transform.origin.add(
@@ -76,7 +76,7 @@ fun DisplayScreen.boundProbe(listener: ListenerPose): BoundProbe? {
     val partialTick = minecraft.timer.getGameTimeDeltaPartialTick(false)
     val min = binding.localMin
     val transform = level.subLevelTransform(binding.subLevelId, min, partialTick) ?: return null
-    val local = DisplayGeometry.INSTANCE.worldPose(min.x, min.y, min.z, width, height, facing)
+    val local = DisplayGeometry.INSTANCE.worldPose(min.x, min.y, min.z, width, height, facing, depth)
 
     val ear = transform.toLocal(min, Vec3(listener.x, listener.y, listener.z))
     val forward = transform.rotateInverse(listener.forwardX, listener.forwardY, listener.forwardZ)

@@ -20,8 +20,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class DisplayScreenMixin {
     @Inject(method = "getDistanceToScreen", at = @At("HEAD"), cancellable = true)
     private void sable$boundDistanceToScreen(
-        final BlockPos position,
-        final CallbackInfoReturnable<Double> cir
+            final BlockPos position,
+            final CallbackInfoReturnable<Double> cir
     ) {
         final Double distance = ScreenKt.boundDistance((DisplayScreen) (Object) this, position);
         if (distance == null) return;
@@ -31,8 +31,8 @@ public class DisplayScreenMixin {
 
     @Inject(method = "isInScreen", at = @At("HEAD"), cancellable = true)
     private void sable$boundScreenContains(
-        final BlockPos position,
-        final CallbackInfoReturnable<Boolean> cir
+            final BlockPos position,
+            final CallbackInfoReturnable<Boolean> cir
     ) {
         final Boolean contains = ScreenKt.boundContains((DisplayScreen) (Object) this, position);
         if (contains == null) return;
@@ -49,17 +49,17 @@ public class DisplayScreenMixin {
     }
 
     @WrapOperation(
-        method = "probeEnvironment",
-        at = @At(
-            value = "INVOKE",
-            target = "Lcom/dreamdisplays/platform/client/audio/VoxelAcousticsProbe;probe(Lcom/dreamdisplays/api/media/audio/model/SourcePlane;Lcom/dreamdisplays/api/media/audio/model/ListenerPose;)Lcom/dreamdisplays/api/media/audio/model/AcousticEnvironment;"
-        )
+            method = "probeEnvironment",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/dreamdisplays/platform/client/audio/VoxelAcousticsProbe;probe(Lcom/dreamdisplays/api/media/audio/model/SourcePlane;Lcom/dreamdisplays/api/media/audio/model/ListenerPose;)Lcom/dreamdisplays/api/media/audio/model/AcousticEnvironment;"
+            )
     )
     private AcousticEnvironment sable$probeInSubLevel(
-        final VoxelAcousticsProbe probe,
-        final SourcePlane plane,
-        final ListenerPose listener,
-        final Operation<AcousticEnvironment> original
+            final VoxelAcousticsProbe probe,
+            final SourcePlane plane,
+            final ListenerPose listener,
+            final Operation<AcousticEnvironment> original
     ) {
         final BoundProbe bound = ScreenAcousticsKt.boundProbe((DisplayScreen) (Object) this, listener);
         if (bound == null) return original.call(probe, plane, listener);

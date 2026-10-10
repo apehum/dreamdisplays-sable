@@ -13,10 +13,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class SubLevelAssemblyHelperMixin {
     @Inject(method = "moveBlocks", at = @At("HEAD"))
     private static void sable$onBlocksMoved(
-        final ServerLevel level,
-        final SubLevelAssemblyHelper.AssemblyTransform transform,
-        final Iterable<BlockPos> blocks,
-        final CallbackInfo ci
+            final ServerLevel level,
+            final SubLevelAssemblyHelper.AssemblyTransform transform,
+            final Iterable<BlockPos> blocks,
+            final CallbackInfo ci
     ) {
         BindingMoveKt.captureMovedDisplays(level, transform, blocks);
     }

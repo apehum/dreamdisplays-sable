@@ -17,23 +17,23 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(DisplayLifecycleManager.class)
 public class DisplayLifecycleManagerMixin {
     @WrapOperation(
-        method = "handleInfoPacket",
-        at = @At(
-            value = "INVOKE",
-            target = "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;distanceToScreen(IIIIILcom/dreamdisplays/api/display/model/property/DisplayFacing;Lnet/minecraft/core/BlockPos;)D"
-        )
+            method = "handleInfoPacket",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lcom/dreamdisplays/platform/client/managers/DisplayLifecycleManager;distanceToScreen(IIIIILcom/dreamdisplays/api/display/model/property/DisplayFacing;Lnet/minecraft/core/BlockPos;)D"
+            )
     )
     private double sable$boundPacketDistance(
-        final DisplayLifecycleManager manager,
-        final int x,
-        final int y,
-        final int z,
-        final int width,
-        final int height,
-        final DisplayFacing facing,
-        final BlockPos playerPosition,
-        final Operation<Double> original,
-        @Local(argsOnly = true) final DisplayInfo packet
+            final DisplayLifecycleManager manager,
+            final int x,
+            final int y,
+            final int z,
+            final int width,
+            final int height,
+            final DisplayFacing facing,
+            final BlockPos playerPosition,
+            final Operation<Double> original,
+            @Local(argsOnly = true) final DisplayInfo packet
     ) {
         final Double distance = ScreenKt.boundDistance(packet.getId(), width, height, facing, playerPosition);
         if (distance == null) {
@@ -45,9 +45,9 @@ public class DisplayLifecycleManagerMixin {
 
     @Inject(method = "distanceToData", at = @At("HEAD"), cancellable = true)
     private void sable$boundCachedDistance(
-        final FullDisplayData data,
-        final BlockPos playerPosition,
-        final CallbackInfoReturnable<Double> cir
+            final FullDisplayData data,
+            final BlockPos playerPosition,
+            final CallbackInfoReturnable<Double> cir
     ) {
         final Double distance = ScreenKt.boundDistance(data, playerPosition);
         if (distance == null) return;

@@ -1,6 +1,6 @@
 package dev.apehum.dreamdisplays.sable.mixin;
 
-import dev.apehum.dreamdisplays.sable.binding.BindingMoveKt;
+import dev.apehum.dreamdisplays.sable.binding.DisplayMoveKt;
 import dev.ryanhcode.sable.api.SubLevelAssemblyHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -18,6 +18,6 @@ public class SubLevelAssemblyHelperMixin {
             final Iterable<BlockPos> blocks,
             final CallbackInfo ci
     ) {
-        BindingMoveKt.captureMovedDisplays(level, transform, blocks);
+        DisplayMoveKt.moveDisplaysWithBlocks(level, transform, blocks);
     }
 }

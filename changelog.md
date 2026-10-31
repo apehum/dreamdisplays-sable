@@ -1,1 +1,5 @@
-- 1.10.0 Dream Displays support with curved displays
+- Requires Dream Displays 1.10.7 or newer
+- Most things now use Dream Displays' API, so it should no longer break on every Dream Displays update (hopefully)
+- Displays on sub-levels are now saved by Dream Displays itself at their actual position on the sub-level, instead of in a separate `bindings.json`
+  - Existing bindings are migrated on first start, so displays created before this update won't break
+- Displays left on a removed sub-level (e.g. `/sable sub_level remove`) are deleted

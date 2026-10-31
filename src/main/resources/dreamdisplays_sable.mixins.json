@@ -5,14 +5,10 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "DisplayManagerMixin",
-    "SubLevelAssemblyHelperMixin",
-    "VanillaDisplayDataAccessor"
+    "SubLevelAssemblyHelperMixin"
   ],
   "client": [
-    "ConformingWorldMeshMixin",
-    "DisplayLifecycleManagerMixin",
-    "DisplayScreenMixin",
-    "ScreenRendererMixin"
+    "DisplayScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

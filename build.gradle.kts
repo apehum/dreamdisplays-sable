@@ -68,7 +68,6 @@ base {
 }
 
 dependencies {
-    compileOnly(libs.kotlinx.coroutines.core)
     compileOnly(libs.kotlinx.serialization.json)
     compileOnly("dev.ryanhcode.sable-companion:sable-companion-common-$mcVersion:${property("deps.sable_companion")}")
     compileOnly("dev.ryanhcode.sable:sable-common-$mcVersion:${property("deps.sable")}") {

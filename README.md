@@ -28,10 +28,10 @@ So creating a sub-level around a display will make that display float in space w
 # Usage
 There's no additional setup required, you just need to create a display in sub-level or assemble sub-level with existing display on it.
 
-![Create display showcase](.github/assets/create.gif)
+<img src=".github/assets/create.gif" alt="Create display showcase" width="100%">
 
-![Merge and split showcase](.github/assets/merge-and-split.gif)
+<img src=".github/assets/merge-and-split.gif" alt="Merge and split showcase" width="100%">
 
-![Disassembling showcase](.github/assets/disassemble.gif)
+<img src=".github/assets/disassemble.gif" alt="Disassembling showcase" width="100%">
 
 *[Create Aeronautics](https://modrinth.com/mod/create-aeronautics) is used for showcases, but it's not required for the addon to work*
